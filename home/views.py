@@ -2,6 +2,8 @@ from django.shortcuts import render, HttpResponse
 from datetime import datetime
 from home.models import Contact
 from django.contrib import messages
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
 
 
 def index(request):
@@ -28,3 +30,21 @@ def contact(request):
         contact.save()
         messages.success(request, 'Your query has been submitted')
     return render(request, 'contact.html')
+
+
+class customloginview(LoginView):
+    template_name = 'login.html'
+    fields = '__all__'
+    redirect_authenticated_user = True
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return (reverse_lazy('home'))
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        messages.success(self.request, 'You have successfully logged in')
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('home')
