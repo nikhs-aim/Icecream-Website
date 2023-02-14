@@ -2,8 +2,7 @@
 from django.contrib import admin
 from django.urls import path
 from home import views
-from .views import customloginview
-from django.contrib.auth.views import LogoutView
+from .views import CustomLogoutView, customloginview
 
 
 urlpatterns = [
@@ -13,8 +12,7 @@ urlpatterns = [
     path('services', views.services, name='services'),
     path('contact', views.contact, name='contact'),
     path('login/', customloginview.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
-
-
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
+    path('register', views.register, name='register')
 
 ]
