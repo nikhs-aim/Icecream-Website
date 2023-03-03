@@ -5,7 +5,7 @@ from home.models import Contact
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
-from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -21,6 +21,7 @@ def services(request):
     return render(request, 'services.html')
 
 
+@login_required(login_url='/login')
 def contact(request):
     if request.method == "POST":   # if someone has posted it will run
         name = request.POST.get('name')
